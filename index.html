@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>私密情侣大富翁 - 成人版</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Inter", "PingFang SC", "Microsoft YaHei", sans-serif;
+        }
+
+        /* 全局暗调背景 */
+        body {
+            background: linear-gradient(135deg, #1a1023 0%, #2d1b41 50%, #1a1023 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            color: #f8f3f9;
+            overflow-x: hidden;
+        }
+
+        /* 标题高级样式 */
+        h1 {
+            font-size: 2.8rem;
+            background: linear-gradient(90deg, #ff87ab, #d946ef, #8b5cf6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 40px;
+            text-shadow: 0 4px 20px rgba(139, 92, 246, 0.2);
+            letter-spacing: 2px;
+        }
+
+        /* 游戏容器 - 高级布局 */
+        .game-container {
+            display: flex;
+            gap: 50px;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: flex-start;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        /* 棋盘高级样式 */
+        .board {
+            display: grid;
+            grid-template-columns: repeat(8, 80px);
+            grid-template-rows: repeat(8, 80px);
+            gap: 4px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 15px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .cell {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            text-align: center;
+            padding: 8px;
+            cursor: default;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            color: #e0d6e6;
+        }
+
+        .cell:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .cell.active {
+            background: linear-gradient(145deg, #ff87ab, #d946ef);
+            color: white;
+            transform: scale(1.08);
+            box-shadow: 0 0 25px rgba(217, 70, 239, 0.4);
+            border-color: transparent;
+        }
+
+        /* 控制面板 - 高级磨砂质感 */
+        .control-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            padding: 30px;
+            border-radius: 20px;
+            min-width: 350px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            align-items: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        /* 3D骰子样式 */
+        .dice {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(145deg, #ffffff, #f0f0f0);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            font-weight: bold;
+            background: linear-gradient(145deg, #ff87ab, #d946ef);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 10px 20px rgba(217, 70, 239, 0.3);
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dice::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .dice:hover::before {
+            left: 100%;
+        }
+
+        .dice:hover {
+            transform: scale(1.08) rotate(5deg);
+            box-shadow: 0 15px 30px rgba(217, 70, 239, 0.4);
+        }
+
+        .dice.rolling {
+            animation: roll 0.6s ease-in-out infinite;
+        }
+
+        @keyframes roll {
+            0% { transform: rotate(0deg) scale(1.05); }
+            25% { transform: rotate(90deg) scale(1.1); }
+            50% { transform: rotate(180deg) scale(1.05); }
+            75% { transform: rotate(270deg) scale(1.1); }
+            100% { transform: rotate(360deg) scale(1.05); }
+        }
+
+        /* 信息面板 */
+        .info {
+            text-align: center;
+            width: 100%;
+        }
+
+        .info p {
+            margin: 15px 0;
+            font-size: 18px;
+            color: #d0c4db;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .info p span {
+            color: #ff87ab;
+            font-weight: 600;
+        }
+
+        /* 任务面板 - 高级质感 */
+        .info .task {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+            padding: 25px 20px;
+            border-radius: 16px;
+            margin-top: 15px;
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255, 135, 171, 0.2);
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .info .task-text {
+            font-size: 20px;
+            color: #f8f3f9;
+            font-weight: 500;
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        /* 重置按钮 - 高级样式 */
+        .reset-btn {
+            padding: 12px 30px;
+            background: linear-gradient(90deg, #8b5cf6, #d946ef);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(139, 92, 246, 0.2);
+            width: 100%;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .reset-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(139, 92, 246, 0.3);
+            background: linear-gradient(90deg, #7c3aed, #c026d3);
+        }
+
+        /* 响应式适配 */
+        @media (max-width: 1200px) {
+            .board {
+                grid-template-columns: repeat(8, 70px);
+                grid-template-rows: repeat(8, 70px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .game-container {
+                padding: 20px;
+            }
+            .board {
+                grid-template-columns: repeat(8, 60px);
+                grid-template-rows: repeat(8, 60px);
+            }
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>💋 私密情侣大富翁 - 成人版 💋</h1>
+    
+    <div class="game-container">
+        <!-- 游戏棋盘 -->
+        <div class="board" id="gameBoard"></div>
+
+        <!-- 控制面板 -->
+        <div class="control-panel">
+            <div class="dice" id="dice">🎲</div>
+            <div class="info">
+                <p>当前位置: <span id="currentPos">0</span> / 64</p>
+                <p>掷出点数: <span id="diceResult">0</span></p>
+                <div class="task">
+                    <span class="task-text" id="taskText">点击骰子开启私密互动～</span>
+                </div>
+            </div>
+            <button class="reset-btn" id="resetBtn">重新开始</button>
+        </div>
+    </div>
+
+    <script>
+        // 1. 初始化游戏变量
+        const board = document.getElementById('gameBoard');
+        const dice = document.getElementById('dice');
+        const diceResult = document.getElementById('diceResult');
+        const currentPos = document.getElementById('currentPos');
+        const taskText = document.getElementById('taskText');
+        const resetBtn = document.getElementById('resetBtn');
+        
+        let currentPosition = 0; // 玩家当前位置（从0开始）
+        const totalCells = 64; // 棋盘总格子数（8x8）
+
+        // 2. 成年人尺度的私密互动任务列表（可自定义修改）
+        const coupleTasks = [
+            "深情拥吻3分钟，不许中断💋",
+            "在对方耳边说一段私密的情话🎙️",
+            "给对方做一次全身放松按摩（重点部位）💆‍♀️",
+            "互相温柔抚摸，感受彼此的体温❤️",
+            "尝试一个新的亲密姿势，慢慢探索✨",
+            "咬对方的耳垂，轻一点哦😘",
+            "帮对方脱衣服，动作要温柔且有仪式感👗",
+            "对视并描述对方身体最吸引你的部位👀",
+            "用舌尖慢慢描绘对方的唇形👄",
+            "从额头开始，吻遍对方的每一寸肌肤🌿",
+            "轻声引导对方，说出你想被触碰的方式🗣️",
+            "互相涂抹身体乳，边涂边轻揉🧴",
+            "在对方身上留下轻轻的吻痕（选隐蔽部位）💓",
+            "用手指慢慢划过对方的敏感地带，感受反应✨",
+            "一起洗个鸳鸯浴，互相帮忙清洁🛁",
+            "趴在对方耳边，说出你的私密小幻想💭",
+            "温柔地咬对方的下唇，慢慢加深💋",
+            "给对方的颈部做一次深度亲吻和轻咬💘",
+            "互相依偎，用身体感受彼此的心跳🫀",
+            "尝试喂食式接吻（比如含一口红酒/酸奶）🍷",
+            "用指尖轻轻划过对方的锁骨和腰线💫",
+            "在对方耳边吹气，轻声说挑逗的话💨",
+            "互相按摩足底，慢慢往上延伸🦶",
+            "帮对方整理头发，边整理边轻吻发际线💇‍♀️",
+            "裸身相拥5分钟，不做其他动作，只感受彼此🤍",
+            "用冰块轻轻划过对方的肌肤，感受温度变化🧊",
+            "描述第一次亲密接触时的感受和心动💓",
+            "互相轻咬手指，传递温柔的占有欲💍",
+            "从背后环抱对方，手慢慢游走👫",
+            "亲吻对方的手心，然后轻咬指尖💋",
+            "一起躺在床上，轻声规划一次私密的二人旅行✈️",
+            "用唇语说出对方的名字，只让对方看懂🤐",
+            "互相刮鼻子，然后顺势吻下去🫶",
+            "帮对方修剪指甲，边剪边轻吻手指💅",
+            "在对方的手心写字，让对方猜是什么字✍️",
+            "尝试法式深吻，慢慢探索彼此的节奏💏",
+            "轻拍对方的臀部，然后温柔抚摸🍑",
+            "互相涂抹口红，然后接吻留下印记💄",
+            "描述对方身上最喜欢的味道，靠近闻一闻👃",
+            "用毛毯包裹彼此，只露出头，深情接吻🧣",
+            "模仿对方的呼吸节奏，慢慢同步🌬️",
+            "轻咬对方的肩膀，留下专属的印记💌",
+            "帮对方揉腰，慢慢加重力度，感受反应🤲",
+            "在对方耳边细数彼此的亲密小秘密🤫",
+            "互相拥抱，把对方紧紧按在怀里，感受力度🫂",
+            "亲吻对方的眼睛，然后轻咬睫毛👁️",
+            "用手指梳理对方的头发，边梳边吻头顶💇‍♂️",
+            "尝试抱起来接吻，感受失重的亲密✨",
+            "互相按摩太阳穴，然后吻向脸颊🌿",
+            "描述你最想和对方做的亲密小事💓",
+            "轻捏对方的脸颊，然后吻上去😚",
+            "帮对方擦嘴角，顺势吻下去🧻",
+            "在对方的耳边轻哼情歌，只唱给对方听🎶",
+            "互相依偎着看一部成人向的浪漫电影🎬",
+            "用舌尖轻舔对方的嘴角，慢慢加深💋",
+            "帮对方放松肩膀，然后吻向颈部💆‍♂️",
+            "描述对方的吻和触碰带给你的感觉💘",
+            "轻挠对方的腰窝，然后吻上去止笑😜",
+            "互相交换一件贴身衣物，作为小信物👙",
+            "在对方的胸口轻轻画圈，感受心跳💓",
+            "尝试站着接吻，让对方靠在墙上🪟",
+            "帮对方揉腿，从脚踝慢慢往上🦵",
+            "轻声告诉对方，你有多渴望彼此❤️‍🔥",
+            "默认初始提示（无任务）"
+        ];
+
+// 3. 创建游戏棋盘
+function createBoard() {
+    board.innerHTML = '';
+    for (let i = 0; i < totalCells; i++) {
+        const cell = document.createElement('div');
+        cell.className = 'cell';
+        cell.id = `cell-${i}`;
+        // 修改这里：显示所有格子的数字（1-64）
+        cell.textContent = i + 1; // 去掉了i < 10的限制
+        board.appendChild(cell);
+    }
+    // 高亮初始位置
+    updateCellHighlight();
+}
+
+        // 4. 更新格子高亮显示
+        function updateCellHighlight() {
+            // 移除所有格子的高亮
+            document.querySelectorAll('.cell').forEach(cell => {
+                cell.classList.remove('active');
+            });
+            // 给当前位置格子添加高亮
+            if (currentPosition < totalCells) {
+                document.getElementById(`cell-${currentPosition}`).classList.add('active');
+            }
+        }
+
+        // 5. 掷骰子函数
+        function rollDice() {
+            // 防止重复点击
+            dice.style.pointerEvents = 'none';
+            dice.classList.add('rolling');
+            taskText.textContent = '正在开启私密任务...🎲';
+            
+            // 模拟骰子滚动动画（0.6秒后显示结果）
+            setTimeout(() => {
+                const diceNum = Math.floor(Math.random() * 6) + 1; // 生成1-6的随机数
+                diceResult.textContent = diceNum;
+                
+                // 计算新位置
+                currentPosition += diceNum;
+                // 超过棋盘边界则回到起点
+                if (currentPosition >= totalCells) {
+                    currentPosition = 0;
+                    taskText.textContent = '🎉 通关啦！奖励一次深度亲密接触～重新开始～';
+                } else {
+                    // 显示对应位置的任务
+                    const taskIndex = currentPosition % (coupleTasks.length - 1); // 排除最后一个默认提示
+                    taskText.textContent = coupleTasks[taskIndex];
+                }
+                
+                // 更新显示和高亮
+                currentPos.textContent = currentPosition;
+                updateCellHighlight();
+                
+                // 恢复骰子点击
+                dice.classList.remove('rolling');
+                dice.style.pointerEvents = 'auto';
+            }, 600);
+        }
+
+        // 6. 重置游戏函数
+        function resetGame() {
+            currentPosition = 0;
+            currentPos.textContent = 0;
+            diceResult.textContent = 0;
+            taskText.textContent = '点击骰子开启私密互动～';
+            updateCellHighlight();
+        }
+
+        // 7. 绑定事件
+        dice.addEventListener('click', rollDice);
+        resetBtn.addEventListener('click', resetGame);
+
+        // 8. 初始化游戏
+        createBoard();
+    </script>
+</body>
+</html>
