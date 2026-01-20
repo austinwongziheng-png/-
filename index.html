@@ -2,149 +2,269 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>私密情侣大富翁 - 成人版</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>情侣大富翁 - 手机版</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: "Inter", "PingFang SC", "Microsoft YaHei", sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        /* 全局暗调背景 */
         body {
-            background: linear-gradient(135deg, #1a1023 0%, #2d1b41 50%, #1a1023 100%);
+            background: linear-gradient(135deg, #1a1023 0%, #2d1b41 100%);
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 40px 20px;
             color: #f8f3f9;
+            padding: 15px 10px;
             overflow-x: hidden;
+            position: relative;
+            font-size: 14px;
         }
 
-        /* 标题高级样式 */
-        h1 {
-            font-size: 2.8rem;
+        /* 顶部标题 */
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 10px 0;
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
             background: linear-gradient(90deg, #ff87ab, #d946ef, #8b5cf6);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            margin-bottom: 40px;
-            text-shadow: 0 4px 20px rgba(139, 92, 246, 0.2);
-            letter-spacing: 2px;
+            margin-bottom: 10px;
         }
 
-        /* 游戏容器 - 高级布局 */
-        .game-container {
+        .subtitle {
+            font-size: 0.9rem;
+            color: #d0c4db;
+            opacity: 0.8;
+        }
+
+        /* 玩家信息卡片 */
+        .players-container {
             display: flex;
-            gap: 50px;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: flex-start;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            border-radius: 20px;
-            padding: 40px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            gap: 10px;
+            margin-bottom: 20px;
         }
 
-        /* 棋盘高级样式 */
-        .board {
-            display: grid;
-            grid-template-columns: repeat(8, 80px);
-            grid-template-rows: repeat(8, 80px);
-            gap: 4px;
-            background: rgba(255, 255, 255, 0.03);
-            padding: 15px;
-            border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        .cell {
-            background: linear-gradient(145deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 13px;
-            text-align: center;
-            padding: 8px;
-            cursor: default;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            color: #e0d6e6;
-        }
-
-        .cell:hover {
+        .player-card {
+            flex: 1;
             background: rgba(255, 255, 255, 0.08);
-            transform: translateY(-2px);
-        }
-
-        .cell.active {
-            background: linear-gradient(145deg, #ff87ab, #d946ef);
-            color: white;
-            transform: scale(1.08);
-            box-shadow: 0 0 25px rgba(217, 70, 239, 0.4);
-            border-color: transparent;
-        }
-
-        /* 控制面板 - 高级磨砂质感 */
-        .control-panel {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            padding: 30px;
-            border-radius: 20px;
-            min-width: 350px;
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
-            align-items: center;
+            border-radius: 15px;
+            padding: 15px;
+            backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        }
-
-        /* 3D骰子样式 */
-        .dice {
-            width: 120px;
-            height: 120px;
-            background: linear-gradient(145deg, #ffffff, #f0f0f0);
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 48px;
-            font-weight: bold;
-            background: linear-gradient(145deg, #ff87ab, #d946ef);
-            color: white;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            box-shadow: 0 10px 20px rgba(217, 70, 239, 0.3);
-            border: none;
+            transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
         }
 
-        .dice::before {
+        .player-card.active {
+            border-color: #ff87ab;
+            box-shadow: 0 0 20px rgba(255, 135, 171, 0.3);
+            transform: translateY(-3px);
+        }
+
+        .player-card::before {
             content: '';
             position: absolute;
             top: 0;
-            left: -100%;
+            left: 0;
             width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: 0.5s;
+            height: 4px;
+            background: linear-gradient(90deg, #ff87ab, #d946ef);
         }
 
-        .dice:hover::before {
-            left: 100%;
+        .player-card.player1::before {
+            background: linear-gradient(90deg, #ff87ab, #d946ef);
         }
 
-        .dice:hover {
-            transform: scale(1.08) rotate(5deg);
-            box-shadow: 0 15px 30px rgba(217, 70, 239, 0.4);
+        .player-card.player2::before {
+            background: linear-gradient(90deg, #8b5cf6, #6366f1);
+        }
+
+        .player-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .player-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-right: 12px;
+            border: 2px solid white;
+        }
+
+        .player1 .player-avatar {
+            background: linear-gradient(135deg, #ff87ab, #d946ef);
+        }
+
+        .player2 .player-avatar {
+            background: linear-gradient(135deg, #8b5cf6, #6366f1);
+        }
+
+        .player-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .player-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .stat {
+            text-align: center;
+            flex: 1;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: #a78bfa;
+            margin-bottom: 3px;
+        }
+
+        .stat-value {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .player-score {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(90deg, #ff87ab, #d946ef);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            padding: 5px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* 棋盘区域 - 适配手机 */
+        .board-container {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            position: relative;
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            grid-template-rows: repeat(8, 1fr);
+            gap: 3px;
+            aspect-ratio: 1;
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        .cell {
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            color: #e0d6e6;
+            min-height: 35px;
+        }
+
+        .cell-number {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            font-size: 0.7rem;
+            opacity: 0.8;
+        }
+
+        .player-marker {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            position: absolute;
+            font-size: 0.6rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1.5px solid white;
+        }
+
+        .player1-marker {
+            background: linear-gradient(135deg, #ff87ab, #d946ef);
+            bottom: 2px;
+            left: 2px;
+        }
+
+        .player2-marker {
+            background: linear-gradient(135deg, #8b5cf6, #6366f1);
+            bottom: 2px;
+            right: 2px;
+        }
+
+        /* 游戏控制区域 */
+        .game-controls {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            margin-bottom: 20px;
+        }
+
+        .turn-indicator {
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #ff87ab;
+            margin-bottom: 20px;
+            padding: 10px;
+            background: rgba(255, 135, 171, 0.1);
+            border-radius: 10px;
+        }
+
+        .dice-section {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .dice {
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(135deg, #ff87ab, #d946ef);
+            border-radius: 15px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(217, 70, 239, 0.3);
+            user-select: none;
+            -webkit-user-select: none;
+            border: none;
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        .dice:active {
+            transform: scale(0.95);
         }
 
         .dice.rolling {
@@ -159,235 +279,894 @@
             100% { transform: rotate(360deg) scale(1.05); }
         }
 
-        /* 信息面板 */
-        .info {
-            text-align: center;
-            width: 100%;
+        .dice-result {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #ff87ab;
         }
 
-        .info p {
-            margin: 15px 0;
-            font-size: 18px;
-            color: #d0c4db;
+        /* 任务面板 */
+        .task-panel {
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid rgba(255, 135, 171, 0.2);
+            margin-bottom: 20px;
+        }
+
+        .task-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 15px;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            margin-bottom: 15px;
         }
 
-        .info p span {
+        .task-title {
+            font-size: 1rem;
+            font-weight: bold;
             color: #ff87ab;
-            font-weight: 600;
         }
 
-        /* 任务面板 - 高级质感 */
-        .info .task {
-            background: linear-gradient(145deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
-            padding: 25px 20px;
-            border-radius: 16px;
-            margin-top: 15px;
-            min-height: 120px;
+        .position-indicator {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .task-text {
+            font-size: 1.1rem;
+            line-height: 1.5;
+            text-align: center;
+            min-height: 80px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 1px solid rgba(255, 135, 171, 0.2);
-            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            margin-bottom: 20px;
         }
 
-        .info .task-text {
-            font-size: 20px;
-            color: #f8f3f9;
-            font-weight: 500;
-            line-height: 1.6;
-            text-align: center;
+        .action-buttons {
+            display: flex;
+            gap: 12px;
         }
 
-        /* 重置按钮 - 高级样式 */
-        .reset-btn {
-            padding: 12px 30px;
-            background: linear-gradient(90deg, #8b5cf6, #d946ef);
-            color: white;
+        .action-btn {
+            flex: 1;
+            padding: 14px;
             border: none;
             border-radius: 10px;
-            cursor: pointer;
-            font-size: 18px;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 20px rgba(139, 92, 246, 0.2);
-            width: 100%;
+            font-size: 1rem;
             font-weight: 600;
-            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-height: 50px;
         }
 
-        .reset-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 25px rgba(139, 92, 246, 0.3);
-            background: linear-gradient(90deg, #7c3aed, #c026d3);
+        .action-btn:active {
+            transform: translateY(2px);
         }
 
-        /* 响应式适配 */
-        @media (max-width: 1200px) {
-            .board {
-                grid-template-columns: repeat(8, 70px);
-                grid-template-rows: repeat(8, 70px);
+        .complete-btn {
+            background: linear-gradient(135deg, #4ade80, #22c55e);
+            color: white;
+            box-shadow: 0 4px 10px rgba(34, 197, 94, 0.2);
+        }
+
+        .skip-btn {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: white;
+            box-shadow: 0 4px 10px rgba(245, 158, 11, 0.2);
+        }
+
+        /* 游戏信息栏 */
+        .game-info {
+            display: flex;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .info-item {
+            flex: 1;
+            min-width: 45%;
+            text-align: center;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+        }
+
+        .info-label {
+            font-size: 0.8rem;
+            color: #a78bfa;
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        /* 重置按钮 */
+        .reset-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #8b5cf6, #d946ef);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 15px rgba(139, 92, 246, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .reset-btn:active {
+            transform: translateY(2px);
+        }
+
+        /* 底部信息 */
+        .footer {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #a78bfa;
+            padding: 15px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 10px;
+        }
+
+        /* 模态框（游戏结束） */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: linear-gradient(135deg, #2d1b41, #1a1023);
+            border-radius: 20px;
+            padding: 30px 25px;
+            max-width: 400px;
+            width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            text-align: center;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal {
+            transform: scale(1);
+        }
+
+        .modal-title {
+            font-size: 1.8rem;
+            background: linear-gradient(90deg, #ff87ab, #d946ef);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 20px;
+        }
+
+        .modal-content {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            color: #f0e6f9;
+        }
+
+        .modal-btn {
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #4ade80, #22c55e);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .modal-btn:active {
+            transform: translateY(2px);
+        }
+
+        /* 横向模式适配 */
+        @media (orientation: landscape) and (max-height: 600px) {
+            .board-container {
+                display: none;
+            }
+            
+            .players-container {
+                margin-bottom: 10px;
+            }
+            
+            .player-card {
+                padding: 10px 15px;
+            }
+            
+            .game-controls {
+                padding: 15px;
+                margin-bottom: 15px;
+            }
+            
+            .task-panel {
+                padding: 15px;
+                margin-bottom: 15px;
+            }
+            
+            .task-text {
+                min-height: 60px;
+                font-size: 1rem;
+            }
+            
+            .action-btn {
+                padding: 12px;
+                font-size: 0.9rem;
             }
         }
 
-        @media (max-width: 768px) {
-            .game-container {
+        /* 平板适配 */
+        @media (min-width: 768px) {
+            body {
+                max-width: 600px;
+                margin: 0 auto;
                 padding: 20px;
             }
-            .board {
-                grid-template-columns: repeat(8, 60px);
-                grid-template-rows: repeat(8, 60px);
+            
+            .header h1 {
+                font-size: 2.2rem;
             }
-            h1 {
-                font-size: 2rem;
+            
+            .cell {
+                min-height: 45px;
             }
+            
+            .dice {
+                width: 110px;
+                height: 110px;
+                font-size: 44px;
+            }
+        }
+
+        /* 防止长按菜单 */
+        * {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        
+        /* 允许文本选择 */
+        .task-text {
+            -webkit-user-select: text;
+            user-select: text;
         }
     </style>
 </head>
 <body>
-    <h1>💋 私密情侣大富翁 - 成人版 💋</h1>
+    <!-- 头部 -->
+    <div class="header">
+        <h1>💑 情侣大富翁</h1>
+        <div class="subtitle">双人手机版 · 私密互动游戏</div>
+    </div>
     
-    <div class="game-container">
-        <!-- 游戏棋盘 -->
-        <div class="board" id="gameBoard"></div>
-
-        <!-- 控制面板 -->
-        <div class="control-panel">
-            <div class="dice" id="dice">🎲</div>
-            <div class="info">
-                <p>当前位置: <span id="currentPos">0</span> / 64</p>
-                <p>掷出点数: <span id="diceResult">0</span></p>
-                <div class="task">
-                    <span class="task-text" id="taskText">点击骰子开启私密互动～</span>
+    <!-- 玩家信息 -->
+    <div class="players-container">
+        <div class="player-card player1 active" id="player1Card">
+            <div class="player-info">
+                <div class="player-avatar">👩</div>
+                <div>
+                    <div class="player-name">Justin</div>
+                    <div class="position-indicator">位置: <span id="player1Position">1</span></div>
                 </div>
             </div>
-            <button class="reset-btn" id="resetBtn">重新开始</button>
+            <div class="player-stats">
+                <div class="stat">
+                    <div class="stat-label">得分</div>
+                    <div class="stat-value" id="player1Score">0</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">完成任务</div>
+                    <div class="stat-value" id="player1Completed">0</div>
+                </div>
+            </div>
         </div>
+        
+        <div class="player-card player2" id="player2Card">
+            <div class="player-info">
+                <div class="player-avatar">👨</div>
+                <div>
+                    <div class="player-name">Austin</div>
+                    <div class="position-indicator">位置: <span id="player2Position">1</span></div>
+                </div>
+            </div>
+            <div class="player-stats">
+                <div class="stat">
+                    <div class="stat-label">得分</div>
+                    <div class="stat-value" id="player2Score">0</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">完成任务</div>
+                    <div class="stat-value" id="player2Completed">0</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 棋盘区域 -->
+    <div class="board-container">
+        <div class="board" id="gameBoard"></div>
+    </div>
+    
+    <!-- 游戏控制 -->
+    <div class="game-controls">
+        <div class="turn-indicator" id="turnIndicator">👩 Justin的回合</div>
+        
+        <div class="dice-section">
+            <div class="dice" id="dice">🎲</div>
+            <div class="dice-result" id="diceResult">点击掷骰子</div>
+        </div>
+        
+        <div class="task-panel">
+            <div class="task-header">
+                <div class="task-title">当前任务</div>
+                <div class="position-indicator" id="currentPosition">位置: 1</div>
+            </div>
+            <div class="task-text" id="taskText">
+                点击骰子开始游戏，按照掷出的点数移动，完成相应位置的私密互动任务。
+            </div>
+            <div class="action-buttons" id="actionButtons" style="display: none;">
+                <button class="action-btn complete-btn" id="completeBtn">
+                    <span>✅</span> 已完成
+                </button>
+                <button class="action-btn skip-btn" id="skipBtn">
+                    <span>⏭️</span> 跳过
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 游戏信息 -->
+    <div class="game-info">
+        <div class="info-item">
+            <div class="info-label">当前回合</div>
+            <div class="info-value" id="currentRound">1</div>
+        </div>
+        <div class="info-item">
+            <div class="info-label">剩余任务</div>
+            <div class="info-value" id="remainingTasks">30</div>
+        </div>
+        <div class="info-item">
+            <div class="info-label">总分数</div>
+            <div class="info-value" id="totalScore">0</div>
+        </div>
+        <div class="info-item">
+            <div class="info-label">总步数</div>
+            <div class="info-value" id="totalMoves">0</div>
+        </div>
+    </div>
+    
+    <!-- 重置按钮 -->
+    <button class="reset-btn" id="resetBtn">
+        <span>🔄</span> 重新开始游戏
+    </button>
+    
+    <!-- 游戏结束模态框 -->
+    <div class="modal-overlay" id="gameOverModal">
+        <div class="modal">
+            <div class="modal-title" id="modalTitle">游戏结束</div>
+            <div class="modal-content" id="modalContent">
+                游戏结束，等待结果显示...
+            </div>
+            <button class="modal-btn" id="modalBtn">再来一局</button>
+        </div>
+    </div>
+    
+    <!-- 底部信息 -->
+    <div class="footer">
+        专为情侣设计的私密互动游戏<br>
+        每完成一个任务可获得2分<br>
+        建议在私密环境中进行
     </div>
 
     <script>
-        // 1. 初始化游戏变量
+        // 游戏状态
+        const gameState = {
+            currentPlayer: 1,
+            round: 1,
+            diceValue: 0,
+            gameOver: false,
+            totalMoves: 0,
+            
+            player1: {
+                position: 0,
+                score: 0,
+                completedTasks: 0,
+                completedPositions: new Set()
+            },
+            
+            player2: {
+                position: 0,
+                score: 0,
+                completedTasks: 0,
+                completedPositions: new Set()
+            },
+            
+            tasks: [],
+            remainingTasks: 30,
+            usedTaskIndices: new Set(),
+            positionTasks: new Array(64).fill(null)
+        };
+        
+        // DOM元素
         const board = document.getElementById('gameBoard');
         const dice = document.getElementById('dice');
         const diceResult = document.getElementById('diceResult');
-        const currentPos = document.getElementById('currentPos');
         const taskText = document.getElementById('taskText');
         const resetBtn = document.getElementById('resetBtn');
+        const actionButtons = document.getElementById('actionButtons');
+        const completeBtn = document.getElementById('completeBtn');
+        const skipBtn = document.getElementById('skipBtn');
+        const turnIndicator = document.getElementById('turnIndicator');
+        const currentPosition = document.getElementById('currentPosition');
         
-        let currentPosition = 0; // 玩家当前位置（从0开始）
-        const totalCells = 64; // 棋盘总格子数（8x8）
-
-        // 2. 成年人尺度的私密互动任务列表（可自定义修改）
-        const coupleTasks = [
+        // 玩家信息元素
+        const player1Card = document.getElementById('player1Card');
+        const player2Card = document.getElementById('player2Card');
+        const player1Position = document.getElementById('player1Position');
+        const player2Position = document.getElementById('player2Position');
+        const player1Score = document.getElementById('player1Score');
+        const player2Score = document.getElementById('player2Score');
+        const player1Completed = document.getElementById('player1Completed');
+        const player2Completed = document.getElementById('player2Completed');
+        const currentRound = document.getElementById('currentRound');
+        const remainingTasks = document.getElementById('remainingTasks');
+        const totalScore = document.getElementById('totalScore');
+        const totalMoves = document.getElementById('totalMoves');
+        
+        // 模态框元素
+        const gameOverModal = document.getElementById('gameOverModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalContent = document.getElementById('modalContent');
+        const modalBtn = document.getElementById('modalBtn');
+        
+        // 任务列表
+        const allTasks = [
             "深情拥吻3分钟，不许中断💋",
             "去switch找jaden，在他面前舌吻",
             "给对方做一次全身放松按摩（用你那条）💆‍♀️",
             "互相温柔抚摸，感受彼此的体温❤️",
             "尝试一个新的亲密姿势，慢慢探索✨",
             "咬对方的耳垂，轻一点哦😘",
-            "帮对方脱衣服，动作要温柔且有仪式感👗",
-            "给对方看下面👀",
+             "给对方看下面👀",
             "用舌尖舔对方下面👄",
             "从额头开始，吻遍对方的每一寸肌肤🌿",
             "互相涂抹身体乳，边涂边轻揉下面",
             "用手指慢慢划过对方的蛋，感受反应✨",
             "一起洗个鸳鸯浴，互相帮忙清洁🛁",
             "去公园吃鸡",
-            
+            "拍一张亲密照",
             "跟对方做爱💘",
             "互相依偎，用身体感受彼此的心跳🫀",
             "互相按摩，按摩到硬🦶",
             "裸身相拥5分钟，不做其他动作，只感受彼此🤍",
             "一起躺在床上，做爱做的事✈️",
             "轻拍对方的臀部，然后温柔抚摸🍑",
-            "在对方面前全裸跳舞💄",
             "在jaden面前全裸跳舞👃",
             "舔腹肌",
             "吃鸡🌬️",
-            "用嘴巴脱对方的裤子💌"
+            "用嘴巴脱对方的裤子💌",
+            "抱抱一分钟",
+	    "拍牵手照",
+	    "舌吻30秒",
+	    "轻咬对方的乳头，感受反应😏",
+	    "舔对方龟头3分钟",
+	    "深喉口交，含到最深处😮",
+	    "用舌头画圈舔龟头👅",
+	    "生殖器贴着生殖器上下滑动🔄",
+	    "摸摸头",
+	    "",
+	    ""
                     ];
-
-// 3. 创建游戏棋盘
-function createBoard() {
-    board.innerHTML = '';
-    for (let i = 0; i < totalCells; i++) {
-        const cell = document.createElement('div');
-        cell.className = 'cell';
-        cell.id = `cell-${i}`;
-        // 修改这里：显示所有格子的数字（1-64）
-        cell.textContent = i + 1; // 去掉了i < 10的限制
-        board.appendChild(cell);
-    }
-    // 高亮初始位置
-    updateCellHighlight();
-}
-
-        // 4. 更新格子高亮显示
-        function updateCellHighlight() {
-            // 移除所有格子的高亮
-            document.querySelectorAll('.cell').forEach(cell => {
-                cell.classList.remove('active');
-            });
-            // 给当前位置格子添加高亮
-            if (currentPosition < totalCells) {
-                document.getElementById(`cell-${currentPosition}`).classList.add('active');
-            }
-        }
-
-        // 5. 掷骰子函数
-        function rollDice() {
-            // 防止重复点击
-            dice.style.pointerEvents = 'none';
-            dice.classList.add('rolling');
-            taskText.textContent = '正在开启私密任务...🎲';
+        
+        // 初始化游戏
+        function initGame() {
+            gameState.currentPlayer = 1;
+            gameState.round = 1;
+            gameState.diceValue = 0;
+            gameState.gameOver = false;
+            gameState.totalMoves = 0;
             
-            // 模拟骰子滚动动画（0.6秒后显示结果）
-            setTimeout(() => {
-                const diceNum = Math.floor(Math.random() * 6) + 1; // 生成1-6的随机数
-                diceResult.textContent = diceNum;
+            gameState.player1 = {
+                position: 0,
+                score: 0,
+                completedTasks: 0,
+                completedPositions: new Set()
+            };
+            
+            gameState.player2 = {
+                position: 0,
+                score: 0,
+                completedTasks: 0,
+                completedPositions: new Set()
+            };
+            
+            gameState.tasks = [...allTasks];
+            gameState.remainingTasks = 30;
+            gameState.usedTaskIndices = new Set();
+            gameState.positionTasks = new Array(64).fill(null);
+            
+            updatePlayerDisplay();
+            updateGameInfo();
+            createBoard();
+            
+            taskText.textContent = "点击骰子开始游戏，按照掷出的点数移动，完成相应位置的私密互动任务。";
+            actionButtons.style.display = "none";
+            turnIndicator.textContent = "👩 玩家一的回合";
+            
+            player1Card.classList.add("active");
+            player2Card.classList.remove("active");
+            
+            dice.style.pointerEvents = "auto";
+            dice.classList.remove("rolling");
+            
+            // 隐藏游戏结束模态框
+            gameOverModal.classList.remove("active");
+        }
+        
+        // 创建棋盘
+        function createBoard() {
+            board.innerHTML = '';
+            
+            for (let i = 0; i < 64; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'cell';
+                cell.id = `cell-${i}`;
                 
-                // 计算新位置
-                currentPosition += diceNum;
-                // 超过棋盘边界则回到起点
-                if (currentPosition >= totalCells) {
-                    currentPosition = 0;
-                    taskText.textContent = '🎉 通关啦！奖励一次深度亲密接触～重新开始～';
-                } else {
-                    // 显示对应位置的任务
-                    const taskIndex = currentPosition % (coupleTasks.length - 1); // 排除最后一个默认提示
-                    taskText.textContent = coupleTasks[taskIndex];
+                // 格子编号
+                const number = document.createElement('div');
+                number.className = 'cell-number';
+                number.textContent = i + 1;
+                cell.appendChild(number);
+                
+                // 检查是否有玩家在这个格子
+                const player1Here = gameState.player1.position === i;
+                const player2Here = gameState.player2.position === i;
+                
+                if (player1Here || player2Here) {
+                    if (player1Here) {
+                        const marker1 = document.createElement('div');
+                        marker1.className = 'player-marker player1-marker';
+                        marker1.textContent = '1';
+                        cell.appendChild(marker1);
+                    }
+                    
+                    if (player2Here) {
+                        const marker2 = document.createElement('div');
+                        marker2.className = 'player-marker player2-marker';
+                        marker2.textContent = '2';
+                        cell.appendChild(marker2);
+                    }
                 }
                 
-                // 更新显示和高亮
-                currentPos.textContent = currentPosition;
-                updateCellHighlight();
+                board.appendChild(cell);
+            }
+        }
+        
+        // 掷骰子
+        function rollDice() {
+            if (gameState.gameOver) return;
+            
+            dice.style.pointerEvents = "none";
+            dice.classList.add("rolling");
+            taskText.textContent = "掷骰子中...";
+            diceResult.textContent = "掷骰子中...";
+            actionButtons.style.display = "none";
+            
+            // 添加振动反馈（如果支持）
+            if (navigator.vibrate) {
+                navigator.vibrate(50);
+            }
+            
+            setTimeout(() => {
+                gameState.diceValue = Math.floor(Math.random() * 6) + 1;
+                diceResult.textContent = `掷出: ${gameState.diceValue}点`;
+                gameState.totalMoves++;
                 
-                // 恢复骰子点击
-                dice.classList.remove('rolling');
-                dice.style.pointerEvents = 'auto';
+                moveCurrentPlayer();
+                checkWinCondition();
+                showTaskForCurrentPosition();
+                
+                updatePlayerDisplay();
+                updateGameInfo();
+                createBoard();
+                
+                dice.classList.remove("rolling");
+                
+                if (!gameState.gameOver) {
+                    actionButtons.style.display = "flex";
+                }
+                
+                // 添加振动反馈
+                if (navigator.vibrate) {
+                    navigator.vibrate([50, 30, 50]);
+                }
             }, 600);
         }
-
-        // 6. 重置游戏函数
-        function resetGame() {
-            currentPosition = 0;
-            currentPos.textContent = 0;
-            diceResult.textContent = 0;
-            taskText.textContent = '点击骰子开启私密互动～';
-            updateCellHighlight();
+        
+        // 移动当前玩家
+        function moveCurrentPlayer() {
+            const player = gameState.currentPlayer === 1 ? gameState.player1 : gameState.player2;
+            
+            player.position += gameState.diceValue;
+            
+            if (player.position >= 64) {
+                player.position = 63; // 停留在最后一格
+            }
         }
-
-        // 7. 绑定事件
-        dice.addEventListener('click', rollDice);
-        resetBtn.addEventListener('click', resetGame);
-
-        // 8. 初始化游戏
-        createBoard();
+        
+        // 显示当前位置的任务
+        function showTaskForCurrentPosition() {
+            const player = gameState.currentPlayer === 1 ? gameState.player1 : gameState.player2;
+            const position = player.position;
+            
+            currentPosition.textContent = `位置: ${position + 1}`;
+            
+            if (player.completedPositions.has(position)) {
+                taskText.textContent = `✅ 位置 ${position + 1}: 您已经在此完成过任务`;
+                actionButtons.style.display = "none";
+                return;
+            }
+            
+            let task = gameState.positionTasks[position];
+            
+            if (!task) {
+                const availableIndices = [];
+                for (let i = 0; i < gameState.tasks.length; i++) {
+                    if (!gameState.usedTaskIndices.has(i)) {
+                        availableIndices.push(i);
+                    }
+                }
+                
+                if (availableIndices.length > 0) {
+                    const randomIndex = Math.floor(Math.random() * availableIndices.length);
+                    const taskIndex = availableIndices[randomIndex];
+                    task = gameState.tasks[taskIndex];
+                    
+                    gameState.usedTaskIndices.add(taskIndex);
+                    gameState.remainingTasks--;
+                    gameState.positionTasks[position] = task;
+                } else {
+                    task = "所有任务已完成！自由选择一个亲密互动吧！";
+                }
+            }
+            
+            taskText.textContent = task;
+        }
+        
+        // 完成任务
+        function completeTask() {
+            const player = gameState.currentPlayer === 1 ? gameState.player1 : gameState.player2;
+            const position = player.position;
+            
+            if (player.completedPositions.has(position)) {
+                switchPlayer();
+                return;
+            }
+            
+            player.completedPositions.add(position);
+            player.completedTasks++;
+            player.score += 2;
+            
+            updatePlayerDisplay();
+            updateGameInfo();
+            
+            taskText.textContent = `✅ 完成任务！+2分`;
+            actionButtons.style.display = "none";
+            
+            // 添加成功反馈
+            if (navigator.vibrate) {
+                navigator.vibrate([100, 50, 100]);
+            }
+            
+            setTimeout(() => {
+                switchPlayer();
+            }, 1000);
+        }
+        
+        // 跳过任务
+        function skipTask() {
+            taskText.textContent = `⏭️ 跳过任务`;
+            actionButtons.style.display = "none";
+            
+            setTimeout(() => {
+                switchPlayer();
+            }, 800);
+        }
+        
+        // 切换玩家
+        function switchPlayer() {
+            gameState.currentPlayer = gameState.currentPlayer === 1 ? 2 : 1;
+            
+            if (gameState.currentPlayer === 1) {
+                gameState.round++;
+            }
+            
+            updatePlayerDisplay();
+            updateGameInfo();
+            
+            if (gameState.currentPlayer === 1) {
+                turnIndicator.textContent = "👩 玩家一的回合";
+                player1Card.classList.add("active");
+                player2Card.classList.remove("active");
+            } else {
+                turnIndicator.textContent = "👨 玩家二的回合";
+                player2Card.classList.add("active");
+                player1Card.classList.remove("active");
+            }
+            
+            diceResult.textContent = "点击掷骰子";
+            
+            if (!gameState.gameOver) {
+                taskText.textContent = `玩家 ${gameState.currentPlayer} 请掷骰子`;
+                dice.style.pointerEvents = "auto";
+            }
+        }
+        
+        // 检查获胜条件
+        function checkWinCondition() {
+            if (gameState.player1.position === 63 || gameState.player2.position === 63) {
+                gameState.gameOver = true;
+                
+                let winner = "";
+                let winnerScore = 0;
+                
+                if (gameState.player1.position === 63 && gameState.player2.position === 63) {
+                    if (gameState.player1.score > gameState.player2.score) {
+                        winner = "玩家一";
+                        winnerScore = gameState.player1.score;
+                    } else if (gameState.player2.score > gameState.player1.score) {
+                        winner = "玩家二";
+                        winnerScore = gameState.player2.score;
+                    } else {
+                        winner = "双方平局";
+                        winnerScore = gameState.player1.score;
+                    }
+                } else if (gameState.player1.position === 63) {
+                    winner = "玩家一";
+                    winnerScore = gameState.player1.score;
+                } else {
+                    winner = "玩家二";
+                    winnerScore = gameState.player2.score;
+                }
+                
+                // 显示游戏结束模态框
+                modalTitle.textContent = "🎉 游戏结束";
+                
+                if (winner === "双方平局") {
+                    modalContent.innerHTML = `
+                        <div style="margin-bottom: 15px; font-size: 1.3rem;">${winner}！</div>
+                        <div>双方各得${winnerScore}分</div>
+                        <div>玩家一: ${gameState.player1.score}分</div>
+                        <div>玩家二: ${gameState.player2.score}分</div>
+                        <div style="margin-top: 15px;">点击下方按钮再来一局</div>
+                    `;
+                } else {
+                    modalContent.innerHTML = `
+                        <div style="margin-bottom: 15px; font-size: 1.3rem;">${winner}获胜！</div>
+                        <div>得分: ${winnerScore}分</div>
+                        <div>完成${winner === "玩家一" ? gameState.player1.completedTasks : gameState.player2.completedTasks}个任务</div>
+                        <div style="margin-top: 15px;">点击下方按钮再来一局</div>
+                    `;
+                }
+                
+                gameOverModal.classList.add("active");
+                actionButtons.style.display = "none";
+                dice.style.pointerEvents = "none";
+            }
+        }
+        
+        // 更新玩家信息显示
+        function updatePlayerDisplay() {
+            player1Position.textContent = gameState.player1.position + 1;
+            player1Score.textContent = gameState.player1.score;
+            player1Completed.textContent = gameState.player1.completedTasks;
+            
+            player2Position.textContent = gameState.player2.position + 1;
+            player2Score.textContent = gameState.player2.score;
+            player2Completed.textContent = gameState.player2.completedTasks;
+        }
+        
+        // 更新游戏信息
+        function updateGameInfo() {
+            currentRound.textContent = gameState.round;
+            remainingTasks.textContent = gameState.remainingTasks;
+            totalScore.textContent = gameState.player1.score + gameState.player2.score;
+            totalMoves.textContent = gameState.totalMoves;
+        }
+        
+        // 事件监听
+        dice.addEventListener("click", rollDice);
+        resetBtn.addEventListener("click", initGame);
+        completeBtn.addEventListener("click", completeTask);
+        skipBtn.addEventListener("click", skipTask);
+        modalBtn.addEventListener("click", () => {
+            gameOverModal.classList.remove("active");
+            initGame();
+        });
+        
+        // 触摸反馈优化
+        [dice, completeBtn, skipBtn, resetBtn, modalBtn].forEach(button => {
+            button.addEventListener("touchstart", function() {
+                this.style.opacity = "0.8";
+            });
+            
+            button.addEventListener("touchend", function() {
+                this.style.opacity = "1";
+            });
+        });
+        
+        // 防止双击缩放
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function(event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+        
+        // 初始化游戏
+        initGame();
+        
+        // 添加到主屏幕提示（仅iOS）
+        if (window.navigator.standalone === false) {
+            // iOS Safari
+            setTimeout(() => {
+                alert("提示：点击分享按钮，然后选择'添加到主屏幕'，可以像App一样使用本游戏。");
+            }, 3000);
+        } else if (window.matchMedia('(display-mode: browser)').matches) {
+            // Android Chrome
+            setTimeout(() => {
+                alert("提示：点击菜单按钮，选择'添加到主屏幕'，可以像App一样使用本游戏。");
+            }, 3000);
+        }
     </script>
 </body>
 </html>
