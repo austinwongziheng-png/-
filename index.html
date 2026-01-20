@@ -123,22 +123,32 @@
             display: flex;
             justify-content: space-between;
             margin-bottom: 10px;
+            gap: 8px;
         }
 
         .stat {
             text-align: center;
             flex: 1;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
         }
 
         .stat-label {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: #a78bfa;
             margin-bottom: 3px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .stat-value {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             font-weight: bold;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
 
         .player-score {
@@ -221,22 +231,27 @@
 
         /* 游戏控制区域 */
         .game-controls {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            padding: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: linear-gradient(135deg, rgba(217, 70, 239, 0.1), rgba(139, 92, 246, 0.1));
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid rgba(255, 135, 171, 0.2);
             margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(217, 70, 239, 0.1);
         }
 
         .turn-indicator {
             text-align: center;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             font-weight: bold;
-            color: #ff87ab;
-            margin-bottom: 20px;
-            padding: 10px;
-            background: rgba(255, 135, 171, 0.1);
-            border-radius: 10px;
+            background: linear-gradient(90deg, #ff87ab, #d946ef);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 25px;
+            padding: 12px 15px;
+            background-color: rgba(255, 135, 171, 0.08);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 135, 171, 0.2);
         }
 
         .dice-section {
@@ -287,11 +302,12 @@
 
         /* 任务面板 */
         .task-panel {
-            background: rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.03);
             border-radius: 15px;
             padding: 20px;
-            border: 1px solid rgba(255, 135, 171, 0.2);
+            border: 1px solid rgba(255, 135, 171, 0.15);
             margin-bottom: 20px;
+            backdrop-filter: blur(5px);
         }
 
         .task-header {
@@ -331,13 +347,19 @@
         .action-buttons {
             display: flex;
             gap: 12px;
+            flex-direction: column;
+        }
+
+        .action-btn-row {
+            display: flex;
+            gap: 12px;
         }
 
         .action-btn {
             flex: 1;
-            padding: 14px;
+            padding: 16px 14px;
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
@@ -346,7 +368,8 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            min-height: 50px;
+            min-height: 52px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
 
         .action-btn:active {
@@ -365,36 +388,56 @@
             box-shadow: 0 4px 10px rgba(245, 158, 11, 0.2);
         }
 
+        .skip-btn:disabled {
+            background: linear-gradient(135deg, #6b7280, #4b5563);
+            opacity: 0.5;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .skip-count {
+            font-size: 0.8rem;
+            margin-top: 6px;
+            color: #fbbf24;
+            text-align: center;
+        }
+
         /* 游戏信息栏 */
         .game-info {
-            display: flex;
-            background: rgba(255, 255, 255, 0.05);
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            background: transparent;
             border-radius: 15px;
-            padding: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 0;
+            border: none;
             margin-bottom: 20px;
-            flex-wrap: wrap;
-            gap: 10px;
+            gap: 12px;
         }
 
         .info-item {
-            flex: 1;
-            min-width: 45%;
             text-align: center;
-            padding: 10px;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 10px;
+            padding: 15px 12px;
+            background: linear-gradient(135deg, rgba(255, 135, 171, 0.05), rgba(139, 92, 246, 0.05));
+            border-radius: 12px;
+            border: 1px solid rgba(255, 135, 171, 0.15);
+            backdrop-filter: blur(5px);
         }
 
         .info-label {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: #a78bfa;
             margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .info-value {
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             font-weight: bold;
+            background: linear-gradient(90deg, #ff87ab, #d946ef);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
 
         /* 重置按钮 */
@@ -590,7 +633,7 @@
     <div class="players-container">
         <div class="player-card player1 active" id="player1Card">
             <div class="player-info">
-                <div class="player-avatar">👩</div>
+                <div class="player-avatar">受</div>
                 <div>
                     <div class="player-name">Justin</div>
                     <div class="position-indicator">位置: <span id="player1Position">1</span></div>
@@ -652,12 +695,15 @@
                 点击骰子开始游戏，按照掷出的点数移动，完成相应位置的私密互动任务。
             </div>
             <div class="action-buttons" id="actionButtons" style="display: none;">
-                <button class="action-btn complete-btn" id="completeBtn">
-                    <span>✅</span> 已完成
-                </button>
-                <button class="action-btn skip-btn" id="skipBtn">
-                    <span>⏭️</span> 跳过
-                </button>
+                <div class="action-btn-row">
+                    <button class="action-btn complete-btn" id="completeBtn">
+                        <span>✅</span> 已完成
+                    </button>
+                    <button class="action-btn skip-btn" id="skipBtn">
+                        <span>⏭️</span> 跳过
+                    </button>
+                </div>
+                <div class="skip-count" id="skipCount"></div>
             </div>
         </div>
     </div>
@@ -713,25 +759,27 @@
             diceValue: 0,
             gameOver: false,
             totalMoves: 0,
+            taskAssigned: false,
+            taskCompleted: false,
+            currentTaskIndex: -1,
             
             player1: {
                 position: 0,
                 score: 0,
                 completedTasks: 0,
-                completedPositions: new Set()
+                skipChances: 3
             },
             
             player2: {
                 position: 0,
                 score: 0,
                 completedTasks: 0,
-                completedPositions: new Set()
+                skipChances: 3
             },
             
             tasks: [],
-            remainingTasks: 30,
-            usedTaskIndices: new Set(),
-            positionTasks: new Array(64).fill(null)
+            completedTaskIndices: new Set(),
+            remainingTasks: 0
         };
         
         // DOM元素
@@ -745,6 +793,7 @@
         const skipBtn = document.getElementById('skipBtn');
         const turnIndicator = document.getElementById('turnIndicator');
         const currentPosition = document.getElementById('currentPosition');
+        const skipCount = document.getElementById('skipCount');
         
         // 玩家信息元素
         const player1Card = document.getElementById('player1Card');
@@ -777,8 +826,6 @@
              "给对方看下面👀",
             "用舌尖舔对方下面👄",
             "从额头开始，吻遍对方的每一寸肌肤🌿",
-            "互相涂抹身体乳，边涂边轻揉下面",
-            "用手指慢慢划过对方的蛋，感受反应✨",
             "一起洗个鸳鸯浴，互相帮忙清洁🛁",
             "去公园吃鸡",
             "拍一张亲密照",
@@ -801,8 +848,17 @@
 	    "用舌头画圈舔龟头👅",
 	    "生殖器贴着生殖器上下滑动🔄",
 	    "摸摸头",
-	    "",
-	    ""
+	    "舔龟头",
+	    "舌吻一分钟",
+        "龟头摩龟头1分钟",
+        "舔乳头30秒",
+        "帮对方脱裤子",
+        "给对方口交3分钟",
+        "深喉口交1分钟",
+        "舌吻3分钟",
+        "揉对方奶头1分钟",
+        "吊放在对方的屁眼上摩擦2分钟",
+        "舌吻5分钟"
                     ];
         
         // 初始化游戏
@@ -812,31 +868,33 @@
             gameState.diceValue = 0;
             gameState.gameOver = false;
             gameState.totalMoves = 0;
+            gameState.taskAssigned = false;
+            gameState.taskCompleted = false;
+            gameState.currentTaskIndex = -1;
             
             gameState.player1 = {
                 position: 0,
                 score: 0,
                 completedTasks: 0,
-                completedPositions: new Set()
+                skipChances: 3
             };
             
             gameState.player2 = {
                 position: 0,
                 score: 0,
                 completedTasks: 0,
-                completedPositions: new Set()
+                skipChances: 3
             };
             
             gameState.tasks = [...allTasks];
-            gameState.remainingTasks = 30;
-            gameState.usedTaskIndices = new Set();
-            gameState.positionTasks = new Array(64).fill(null);
+            gameState.completedTaskIndices = new Set();
+            gameState.remainingTasks = gameState.tasks.length;
             
             updatePlayerDisplay();
             updateGameInfo();
             createBoard();
             
-            taskText.textContent = "点击骰子开始游戏，按照掷出的点数移动，完成相应位置的私密互动任务。";
+            taskText.textContent = "点击骰子获得任务，完成任务后就能前进一格！";
             actionButtons.style.display = "none";
             turnIndicator.textContent = "👩 玩家一的回合";
             
@@ -845,6 +903,7 @@
             
             dice.style.pointerEvents = "auto";
             dice.classList.remove("rolling");
+            diceResult.textContent = "点击掷骰子";
             
             // 隐藏游戏结束模态框
             gameOverModal.classList.remove("active");
@@ -889,9 +948,10 @@
             }
         }
         
-        // 掷骰子
+        // 掷骰子 - 分配任务
         function rollDice() {
             if (gameState.gameOver) return;
+            if (gameState.taskAssigned && !gameState.taskCompleted) return; // 任务未完成，不能再掷
             
             dice.style.pointerEvents = "none";
             dice.classList.add("rolling");
@@ -899,31 +959,43 @@
             diceResult.textContent = "掷骰子中...";
             actionButtons.style.display = "none";
             
-            // 添加振动反馈（如果支持）
             if (navigator.vibrate) {
                 navigator.vibrate(50);
             }
             
             setTimeout(() => {
-                gameState.diceValue = Math.floor(Math.random() * 6) + 1;
-                diceResult.textContent = `掷出: ${gameState.diceValue}点`;
+                // 分配一个未完成的任务
+                const availableIndices = [];
+                for (let i = 0; i < gameState.tasks.length; i++) {
+                    if (!gameState.completedTaskIndices.has(i)) {
+                        availableIndices.push(i);
+                    }
+                }
+                
+                if (availableIndices.length === 0) {
+                    // 所有任务都完成了
+                    checkWinCondition();
+                    dice.classList.remove("rolling");
+                    return;
+                }
+                
+                const randomIndex = Math.floor(Math.random() * availableIndices.length);
+                gameState.currentTaskIndex = availableIndices[randomIndex];
+                const task = gameState.tasks[gameState.currentTaskIndex];
+                
+                gameState.taskAssigned = true;
+                gameState.taskCompleted = false;
                 gameState.totalMoves++;
+                diceResult.textContent = `任务已分配`;
                 
-                moveCurrentPlayer();
-                checkWinCondition();
-                showTaskForCurrentPosition();
+                taskText.textContent = task;
+                actionButtons.style.display = "flex";
                 
-                updatePlayerDisplay();
+                updateSkipCountDisplay();
                 updateGameInfo();
-                createBoard();
                 
                 dice.classList.remove("rolling");
                 
-                if (!gameState.gameOver) {
-                    actionButtons.style.display = "flex";
-                }
-                
-                // 添加振动反馈
                 if (navigator.vibrate) {
                     navigator.vibrate([50, 30, 50]);
                 }
@@ -933,11 +1005,10 @@
         // 移动当前玩家
         function moveCurrentPlayer() {
             const player = gameState.currentPlayer === 1 ? gameState.player1 : gameState.player2;
+            player.position++;
             
-            player.position += gameState.diceValue;
-            
-            if (player.position >= 64) {
-                player.position = 63; // 停留在最后一格
+            if (player.position > 63) {
+                player.position = 63;
             }
         }
         
@@ -947,6 +1018,9 @@
             const position = player.position;
             
             currentPosition.textContent = `位置: ${position + 1}`;
+            
+            // 更新跳过次数显示
+            updateSkipCountDisplay();
             
             if (player.completedPositions.has(position)) {
                 taskText.textContent = `✅ 位置 ${position + 1}: 您已经在此完成过任务`;
@@ -982,38 +1056,71 @@
         
         // 完成任务
         function completeTask() {
+            if (!gameState.taskAssigned) return;
+            
             const player = gameState.currentPlayer === 1 ? gameState.player1 : gameState.player2;
-            const position = player.position;
             
-            if (player.completedPositions.has(position)) {
-                switchPlayer();
-                return;
-            }
+            // 标记任务为已完成
+            gameState.completedTaskIndices.add(gameState.currentTaskIndex);
             
-            player.completedPositions.add(position);
+            // 移动玩家前进一格
+            moveCurrentPlayer();
             player.completedTasks++;
             player.score += 2;
             
+            gameState.taskCompleted = true;
+            gameState.taskAssigned = false;
+            gameState.remainingTasks = gameState.tasks.length - gameState.completedTaskIndices.size;
+            
             updatePlayerDisplay();
             updateGameInfo();
+            createBoard();
             
-            taskText.textContent = `✅ 完成任务！+2分`;
+            taskText.textContent = `✅ 完成任务！+2分 | 前进至第 ${player.position + 1} 格`;
             actionButtons.style.display = "none";
             
-            // 添加成功反馈
             if (navigator.vibrate) {
                 navigator.vibrate([100, 50, 100]);
             }
             
-            setTimeout(() => {
-                switchPlayer();
-            }, 1000);
+            checkWinCondition();
+            
+            if (!gameState.gameOver) {
+                setTimeout(() => {
+                    switchPlayer();
+                }, 1500);
+            }
         }
         
         // 跳过任务
         function skipTask() {
-            taskText.textContent = `⏭️ 跳过任务`;
+            if (!gameState.taskAssigned) return;
+            
+            const player = gameState.currentPlayer === 1 ? gameState.player1 : gameState.player2;
+            
+            if (player.skipChances <= 0) {
+                taskText.textContent = `❌ 跳过机会已用完！必须完成此任务`;
+                return;
+            }
+            
+            player.skipChances--;
+            
+            // 标记任务为已完成（这样就不会再出现这个任务）
+            gameState.completedTaskIndices.add(gameState.currentTaskIndex);
+            gameState.remainingTasks = gameState.tasks.length - gameState.completedTaskIndices.size;
+            
+            gameState.taskCompleted = true;
+            gameState.taskAssigned = false;
+            
+            taskText.textContent = `⏭️ 已跳过 (剩余${player.skipChances}次)`;
             actionButtons.style.display = "none";
+            
+            if (navigator.vibrate) {
+                navigator.vibrate(50);
+            }
+            
+            updatePlayerDisplay();
+            updateGameInfo();
             
             setTimeout(() => {
                 switchPlayer();
@@ -1042,49 +1149,41 @@
             }
             
             diceResult.textContent = "点击掷骰子";
+            taskText.textContent = `玩家 ${gameState.currentPlayer} 的回合，点击骰子获取任务！`;
             
             if (!gameState.gameOver) {
-                taskText.textContent = `玩家 ${gameState.currentPlayer} 请掷骰子`;
                 dice.style.pointerEvents = "auto";
             }
         }
         
         // 检查获胜条件
         function checkWinCondition() {
-            if (gameState.player1.position === 63 || gameState.player2.position === 63) {
+            if (gameState.remainingTasks <= 0 || gameState.completedTaskIndices.size >= gameState.tasks.length) {
                 gameState.gameOver = true;
                 
                 let winner = "";
                 let winnerScore = 0;
                 
-                if (gameState.player1.position === 63 && gameState.player2.position === 63) {
-                    if (gameState.player1.score > gameState.player2.score) {
-                        winner = "玩家一";
-                        winnerScore = gameState.player1.score;
-                    } else if (gameState.player2.score > gameState.player1.score) {
-                        winner = "玩家二";
-                        winnerScore = gameState.player2.score;
-                    } else {
-                        winner = "双方平局";
-                        winnerScore = gameState.player1.score;
-                    }
-                } else if (gameState.player1.position === 63) {
+                if (gameState.player1.score > gameState.player2.score) {
                     winner = "玩家一";
                     winnerScore = gameState.player1.score;
-                } else {
+                } else if (gameState.player2.score > gameState.player1.score) {
                     winner = "玩家二";
                     winnerScore = gameState.player2.score;
+                } else {
+                    winner = "双方平局";
+                    winnerScore = gameState.player1.score;
                 }
                 
                 // 显示游戏结束模态框
-                modalTitle.textContent = "🎉 游戏结束";
+                modalTitle.textContent = "🎉 所有任务完成！";
                 
                 if (winner === "双方平局") {
                     modalContent.innerHTML = `
                         <div style="margin-bottom: 15px; font-size: 1.3rem;">${winner}！</div>
                         <div>双方各得${winnerScore}分</div>
-                        <div>玩家一: ${gameState.player1.score}分</div>
-                        <div>玩家二: ${gameState.player2.score}分</div>
+                        <div>玩家一: ${gameState.player1.score}分 | ${gameState.player1.completedTasks}个任务</div>
+                        <div>玩家二: ${gameState.player2.score}分 | ${gameState.player2.completedTasks}个任务</div>
                         <div style="margin-top: 15px;">点击下方按钮再来一局</div>
                     `;
                 } else {
@@ -1111,6 +1210,20 @@
             player2Position.textContent = gameState.player2.position + 1;
             player2Score.textContent = gameState.player2.score;
             player2Completed.textContent = gameState.player2.completedTasks;
+        }
+        
+        // 更新跳过次数显示
+        function updateSkipCountDisplay() {
+            const player = gameState.currentPlayer === 1 ? gameState.player1 : gameState.player2;
+            const playerName = gameState.currentPlayer === 1 ? "玩家一" : "玩家二";
+            
+            if (player.skipChances > 0) {
+                skipBtn.disabled = false;
+                skipCount.textContent = `${playerName}的跳过机会: ${player.skipChances}/3`;
+            } else {
+                skipBtn.disabled = true;
+                skipCount.textContent = `${playerName}的跳过机会已用完，必须完成任务！`;
+            }
         }
         
         // 更新游戏信息
@@ -1155,18 +1268,6 @@
         // 初始化游戏
         initGame();
         
-        // 添加到主屏幕提示（仅iOS）
-        if (window.navigator.standalone === false) {
-            // iOS Safari
-            setTimeout(() => {
-                alert("提示：点击分享按钮，然后选择'添加到主屏幕'，可以像App一样使用本游戏。");
-            }, 3000);
-        } else if (window.matchMedia('(display-mode: browser)').matches) {
-            // Android Chrome
-            setTimeout(() => {
-                alert("提示：点击菜单按钮，选择'添加到主屏幕'，可以像App一样使用本游戏。");
-            }, 3000);
-        }
     </script>
 </body>
 </html>
